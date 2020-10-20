@@ -1,0 +1,23 @@
+{
+  "name": "geo_sender",
+  "version": "1.0.0",
+  "description": "send buffer geometry with socket.io",
+  "main": "index.js",
+  "type":"module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ryanaltair/geo_sender.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ryanaltair/geo_sender/issues"
+  },
+  "homepage": "https://github.com/ryanaltair/geo_sender#readme",
+  "dependencies": {
+    "socket.io": "^2.3.0"
+  }
+}
