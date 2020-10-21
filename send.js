@@ -8,12 +8,21 @@ const geoRaw = JSON.parse(data)
 const geoNow = JSON.parse(data)
 const port = 5001
 console.log(geoNow)
-function changeGeo (factor) {
+function changePressure (factor) {
+  const positionsNow = geoNow.data.attributes.pressure.array
+  const positionsRaw = geoRaw.data.attributes.pressure.array
+  const max = positionsRaw.length
+  for (let i = 0; i < max; i += 1) {
+    positionsNow[i] = positionsRaw[i] + factor
+  }
+}
+function changeGeo (xFactor, yFactor) {
   const positionsNow = geoNow.data.attributes.position.array
   const positionsRaw = geoRaw.data.attributes.position.array
   const max = positionsRaw.length
   for (let i = 0; i < max; i += 3) {
-    positionsNow[i + 0] = positionsRaw[i + 0] + factor
+    positionsNow[i + 0] = positionsRaw[i + 0] + xFactor
+    positionsNow[i + 1] = positionsRaw[i + 1] + yFactor
   }
 }
 function runServer () {
@@ -30,11 +39,12 @@ function runServer () {
     setInterval(() => {
       //   time++
       //   console.log('stream send')
-      changeGeo(0.1 * Math.sin(time * 0.1))
-      io.emit('stream.in', { in1: { a: 2 * (1 + Math.sin(time * 0.1)) } })
+      changePressure(1000 * Math.sin(time * 0.1))
+      changeGeo(1 * Math.sin(time * 0.1), 1 * Math.cos(time * 0.1))
+      io.emit('stream.in', { in1: { a: 3 + Math.sin(time * 0.1) } })
       io.emit('stream.in', { in2: { geo: geoNow } })
       time++
-    }, 100)
+    }, 50)
   }
 
   io.on('connection', socket => {
