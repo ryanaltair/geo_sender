@@ -3,17 +3,18 @@ import ioBuilder from 'socket.io'
 import http from 'http'
 import fs from 'fs'
 
-const data = fs.readFileSync('upload/pressure.json')
+// const data = fs.readFileSync('upload/pressure.json')
+const data = fs.readFileSync('upload/sample.json')
 const geoRaw = JSON.parse(data)
 const geoNow = JSON.parse(data)
 const port = 5001
 console.log(geoNow)
 function changePressure (factor) {
-  const positionsNow = geoNow.data.attributes.pressure.array
-  const positionsRaw = geoRaw.data.attributes.pressure.array
-  const max = positionsRaw.length
+  const pressureNow = geoNow.data.attributes.pressure.array
+  const pressureRaw = geoRaw.data.attributes.pressure.array
+  const max = pressureRaw.length
   for (let i = 0; i < max; i += 1) {
-    positionsNow[i] = positionsRaw[i] + factor
+    pressureNow[i] = pressureRaw[i] + factor
   }
 }
 function changeGeo (xFactor, yFactor) {
@@ -40,7 +41,7 @@ function runServer () {
       //   time++
       //   console.log('stream send')
       changePressure(1000 * Math.sin(time * 0.1))
-      changeGeo(1 * Math.sin(time * 0.1), 1 * Math.cos(time * 0.1))
+      // changeGeo(1 * Math.sin(time * 0.1), 1 * Math.cos(time * 0.1))
       io.emit('stream.in', { in1: { a: 3 + Math.sin(time * 0.1) } })
       io.emit('stream.in', { in2: { geo: geoNow } })
       time++
